@@ -47,7 +47,7 @@ function Payment() {
         toast.success("Payment successful, you'll receive an email shortly!");
       })
       .catch((err) => {
-        toast.success('Sorry, we were unable to send your purchase. Please contact support!');
+        toast.error('Sorry, we were unable to send your purchase. Please contact support!');
       });
   };
 
