@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {
   doc, getDoc, updateDoc, arrayUnion,
 } from 'firebase/firestore';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import QRCode from 'react-qr-code';
@@ -122,6 +123,18 @@ function Payment() {
   };
 
   useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setDetails((prevDetails) => ({
+          ...prevDetails,
+          email: auth.currentUser.email,
+        }));
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     const fetchDetails = async () => {
       const newsletterRef = doc(db, 'Newsletters', params.newsletterId);
       const editionRef = doc(newsletterRef, 'editions', params.editionId);
@@ -190,7 +203,7 @@ function Payment() {
     return (
       <div>
         <header className="center invoice-header">
-          <h3>Thank you for your purchase!</h3>
+          <h3 className="color-text">Thank you for your purchase!</h3>
         </header>
         <main className="center">
           <button type="button" className="gradient-btn" onClick={() => navigate('/')}>
@@ -211,7 +224,7 @@ function Payment() {
         ? (
           <div>
             <main className="grid">
-              <p className="invoice-header">Please add an email that you want the newsletter sent to</p>
+              <p className="invoice-header color-text">Please add an email that you want the newsletter sent to</p>
               <label className="color-text" htmlFor={emailId}>
                 <input
                   className="invoice-email-input"
