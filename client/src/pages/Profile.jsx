@@ -81,7 +81,14 @@ function Profile() {
                   />
                 ))}
               </ul>
-            ) : <p>You do not have any newsletters yet</p> }
+            ) : (
+              <div>
+                <p>You do not have any newsletters yet</p>
+                <Link to="/create-newsletter" className="createNewsletter create-btn">
+                  <p>+ Create</p>
+                </Link>
+              </div>
+            ) }
           </div>
         </section>
 

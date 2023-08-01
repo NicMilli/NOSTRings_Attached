@@ -48,7 +48,7 @@ function DashboardRow({ data, title, type }) {
     ],
   };
 
-  if (data?.length === 0) {
+  if (data?.length === 0 && type !== 'owned-newsletters') {
     return (
       <>
         &nbsp;
