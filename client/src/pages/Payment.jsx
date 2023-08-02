@@ -228,7 +228,7 @@ function Payment() {
             <header className="center invoice-header">
               <h3 className="color-text">Payment invoice has been generated</h3>
             </header>
-            <main className="grid">
+            <main className="center-grid">
               <button type="button" className="gradient-btn" onClick={copyToClipboard}>Copy pay string</button>
               <p className="invoice-header color-text">Or scan here:</p>
               <QRCode
