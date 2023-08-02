@@ -108,8 +108,10 @@ function CreateNewsletter() {
 
   if (getWallet) {
     return (
-      <div>
-        Please add an Alby payment address first!
+      <div className="center-grid">
+        <p className="invoice-header color-text">
+          Please add an Alby payment address first!
+        </p>
         <input value={walletAddr} type="text" id="walletAddr" onChange={handleChange} required />
         <button type="button" onClick={handleWallet}>
           add

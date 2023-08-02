@@ -91,27 +91,6 @@ function Payment() {
           if (settled) {
             sendEmail();
 
-            // const data = {
-            //   service_id: process.env.SERVICE_ID,
-            //   template_id: process.env.TEMPLATE_ID,
-            //   user_id: process.env.EMAILJS_PUBLIC_KEY,
-            //   template_params: {
-            //     to_email: details.email,
-            //     url: details.source,
-            //     newsletter_title: newsletter.title,
-            //     preview: details.preview,
-            //   },
-            // };
-
-            // axios.post('https://api.emailjs.com/api/v1.0/email/send', data)
-            //   .then(() => {
-            //     setSuccess(true);
-            //     toast.success("Payment successful, you'll receive an email shortly!");
-            //   })
-            //   .catch((err) => {
-            //     toast.success('Sorry, we were unable to send your purchase. Please contact support!');
-            //   });
-
             clearInterval(interval);
           }
         }, 5000);
@@ -223,7 +202,7 @@ function Payment() {
       {!invoiceGenerated
         ? (
           <div>
-            <main className="grid">
+            <main className="center-grid">
               <p className="invoice-header color-text">Please add an email that you want the newsletter sent to</p>
               <label className="color-text" htmlFor={emailId}>
                 <input
