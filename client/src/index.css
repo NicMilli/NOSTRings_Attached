@@ -524,3 +524,11 @@ ul {
   justify-content: center;
   width: 100vw;
 }
+
+.payment-flex {
+  display: flex;
+  place-items: center center;
+  max-width: 90vw;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}

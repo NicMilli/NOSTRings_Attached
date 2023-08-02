@@ -242,11 +242,14 @@ function Payment() {
             </header>
             <main className="center-grid">
               {showPaystring ? (
-                <p className="color-text">
-                  Sorry, we do not have permission to copy to your clipboard, here is your paystring
-                  <br />
-                  {invoiceDetails.paymentRequest}
-                </p>
+                <div className="payment-flex">
+                  <p className="color-text ">
+                    Sorry, we do not have permission to copy to your clipboard, here is your paystring
+                    <br />
+                    {invoiceDetails.paymentRequest}
+                  </p>
+                </div>
+
               )
                 : <button type="button" className="gradient-btn" onClick={copyToClipboard}>Copy pay string</button>}
 
