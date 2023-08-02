@@ -20,6 +20,7 @@ function Payment() {
   const [success, setSuccess] = useState(false);
   const [invoiceGenerated, setInvoiceGenerated] = useState(false);
   const [invoiceDetails, setInvoiceDetails] = useState({});
+  const [showPaystring, setShowPaystring] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
   const emailId = useId();
@@ -175,10 +176,12 @@ function Payment() {
         .then(() => {
           toast.success('Paystring copied!');
         })
-        .catch((err) => {
+        .catch(() => {
+          setShowPaystring(true);
           alert(`Sorry, we do not have permission to copy to your clipboard, here is your paystring: ${invoiceDetails.paymentRequest}`);
         });
     } else {
+      setShowPaystring(true);
       alert(`Sorry, we do not have permission to copy to your clipboard, here is your paystring: ${invoiceDetails.paymentRequest}`);
     }
   };
@@ -238,7 +241,15 @@ function Payment() {
               <h3 className="color-text">Payment invoice has been generated</h3>
             </header>
             <main className="center-grid">
-              <button type="button" className="gradient-btn" onClick={copyToClipboard}>Copy pay string</button>
+              {showPaystring ? (
+                <p className="color-text">
+                  Sorry, we do not have permission to copy to your clipboard, here is your paystring
+                  <br />
+                  {invoiceDetails.paymentRequest}
+                </p>
+              )
+                : <button type="button" className="gradient-btn" onClick={copyToClipboard}>Copy pay string</button>}
+
               <p className="invoice-header color-text">Or scan here:</p>
               <QRCode
                 size={256}
