@@ -168,57 +168,57 @@ function NewEdition() {
       }
       text = text.substring(0, 2000);
 
-      const options = {
-        model: 'gpt-4',
-        messages: [
-          {
-            role: 'system',
-            content: 'You run marketing for a digital newsletter.',
-          },
-          {
-            role: 'user',
-            content: `Given the latest edition below write a short and catchy summary to entice readers to buy the newsletter without giving too much away: \n ${text}`,
-          },
-        ],
-      };
+      if (text.length === 0) {
+        toast.error('Sorry we were unable to parse your file');
+      } else {
+        const options = {
+          model: 'gpt-4',
+          messages: [
+            {
+              role: 'system',
+              content: 'You run marketing for a digital newsletter.',
+            },
+            {
+              role: 'user',
+              content: `Given the latest edition below write a short and catchy summary to entice readers to buy the newsletter without giving too much away: \n ${text}`,
+            },
+          ],
+        };
 
-      try {
-        await axios.post('https://matador-ai.replit.app/v1/chat/completions', options);
-      } catch (error) {
-        if (error.response && error.response.status === 402) {
-          const payRequest = error.response.headers['www-authenticate'].split('=')[2];
-          const tokenStartIndex = error.response.headers['www-authenticate'].indexOf('token=') + 6;
-          const tokenEndIndex = error.response.headers['www-authenticate'].indexOf(',', tokenStartIndex);
-          const token = error.response.headers['www-authenticate'].substring(tokenStartIndex, tokenEndIndex);
-          try {
-            await window.webln.enable();
-            const response = await window.webln.sendPayment(payRequest);
+        try {
+          await axios.post('https://matador-ai.replit.app/v1/chat/completions', options);
+        } catch (error) {
+          if (error.response && error.response.status === 402) {
+            const payRequest = error.response.headers['www-authenticate'].split('=')[2];
+            const tokenStartIndex = error.response.headers['www-authenticate'].indexOf('token=') + 6;
+            const tokenEndIndex = error.response.headers['www-authenticate'].indexOf(',', tokenStartIndex);
+            const token = error.response.headers['www-authenticate'].substring(tokenStartIndex, tokenEndIndex);
+            try {
+              await window.webln.enable();
+              const response = await window.webln.sendPayment(payRequest);
 
-            if (response.preimage) {
-              const finalResponse = await axios.post(
-                'https://matador-ai.replit.app/v1/chat/completions',
-                options,
-                {
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `L402 ${token}:${response.preimage}`,
+              if (response.preimage) {
+                const finalResponse = await axios.post(
+                  'https://matador-ai.replit.app/v1/chat/completions',
+                  options,
+                  {
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `L402 ${token}:${response.preimage}`,
+                    },
                   },
-                },
-              );
-              setFormData((prevDetails) => ({
-                ...prevDetails,
-                preview: finalResponse.data.choices[0].message.content
-              }));
+                );
+                setFormData((prevDetails) => ({
+                  ...prevDetails,
+                  preview: finalResponse.data.choices[0].message.content,
+                }));
+              }
+            } catch {
+              toast.error('Please install a browser extension to pay, try Alby!');
             }
-          } catch {
-            toast.error('Please install a browser extension to pay, try Alby!');
           }
         }
       }
-
-      // const generatedPreview = await axios.post('/summary', { text });
-      // // const previewText = generatedPreview.data;
-      // setFormData((prevDetails) => ({ ...prevDetails, preview: generatedPreview.data }));
     } catch (error) {
       toast.error('Sorry, we were unable to read your document');
     }

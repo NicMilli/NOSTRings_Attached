@@ -21,7 +21,6 @@ function Home() {
     const allDocs = [];
 
     querySnapshot.forEach((doc) => {
-      // console.log(doc.id, ' => ', doc.data());
       const docData = doc.data();
       docData.id = doc.id;
       allDocs.push(docData);
