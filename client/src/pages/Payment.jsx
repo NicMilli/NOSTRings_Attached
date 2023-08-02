@@ -170,8 +170,17 @@ function Payment() {
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(invoiceDetails.paymentRequest);
-    toast.success('Paystring copied!');
+    if (navigator?.clipboard) {
+      navigator.clipboard.writeText(invoiceDetails.paymentRequest)
+        .then(() => {
+          toast.success('Paystring copied!');
+        })
+        .catch((err) => {
+          alert(`Sorry, we do not have permission to copy to your clipboard, here is your paystring: ${invoiceDetails.paymentRequest}`);
+        });
+    } else {
+      alert(`Sorry, we do not have permission to copy to your clipboard, here is your paystring: ${invoiceDetails.paymentRequest}`);
+    }
   };
 
   if (loading) {
